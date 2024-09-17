@@ -1,0 +1,27 @@
+.not-found {
+  margin: 0 auto;
+  max-width: 50%;
+  padding: 1rem 1rem;
+  text-align: center;
+}
+
+.not-found h1 {
+  color: var(--accent);
+  font-size: 72px;
+  margin-bottom: 0;
+}
+
+.not-found h2 {
+  font-size: 24px;
+  margin-top: 0;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+.home-link {
+  color: var(--default-button-font-color);
+  text-decoration: none;
+}

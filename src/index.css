@@ -1,13 +1,119 @@
+:root {
+  --background: #f9f9f9;
+  --default-font-color: #4a4a4a;
+  --default-font-shadow: #ffffff;
+  --default-border-color: #000080;
+  --default-border-radius: 0.5rem;
+  --accent: #000080;
+  --accent-shadow: #00008042;
+  --hover-shadow: #00800050;
+
+  --success: #4caf50;
+  --cancel: #f44336;
+
+  /* Block */
+  --default-block-padding: 0.7rem;
+  --default-block-margin: 0.8rem;
+  --default-block-bg-color: #ffffff;
+  --default-block-border-color: #4a4a4a25;
+  --default-block-border-radius: 0.8rem;
+
+  /* Button */
+  --default-button-font-color: #ffffff;
+  --default-button-bg-color: #000099;
+  --default-button-bg-disabled-color: #4a4a4a;
+
+  --default-button-bg-color-hover: #000080;
+  --default-button-border-radius: 0.5rem;
+
+  /* Input */
+  --default-input-font-color: #4a4a4a;
+  --default-input-bg-color: #ffffff;
+  --default-input-bg-disabled-color: #4a4a4a25;
+  --default-input-border-color: #4a4a4a;
+  --default-input-focus-color: #00008065; /* with transparency */
+  --default-input-border-radius: 0.5rem;
+
+  /* Book */
+  --default-book-font-color: #4a4a4a;
+  --default-book-bg-color: #f9f9f9;
+  --default-book-border-color: #00008010;
+
+  /* Modal */
+  --default-modal-bg-color: #00008050;
+
+  /* Toast */
+  --default-toast-bg-color: #4a4a4a;
+  --default-toast-font-color: #f9f9f9;
+  --default-toast-font-size: 1rem;
+  --default-toast-border-color: #333;
+  --default-toast-border-radius: 0.5rem;
+  --default-toast-close-color: #fff;
+
+  --default-toast-success-bg-color: #4caf50;
+  --default-toast-success-font-color: #f9f9f9;
+
+  --default-toast-error-bg-color: #f44336;
+  --default-toast-error-font-color: #f9f9f9;
+
+  /* Navbar */
+  --default-navbar-bg-color: #f9f9f900;
+  --default-navbar-font-color: #4a4a4a;
+  --default-navbar-border-color: #4a4a4a05;
+  --default-navbar-border-radius: 0.5rem;
+  --default-navbar-button-border-color: #000080;
+
+  --default-navbar-hamburger-overlay-color: #00008000;
+  --default-navbar-hamburger-overlay-blur: 12px; /*  DOES NOT WORK CHANGE ON THE COMPONENT */
+}
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background);
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.images-wrapper {
+  line-height: 0;
+  -webkit-column-count: 5;
+  -webkit-column-gap: 0px;
+  -moz-column-count: 5;
+  -moz-column-gap: 0px;
+  column-count: 5;
+  column-gap: 0px;
+}
+
+.images-wrapper img {
+  width: 100% !important;
+  height: auto !important;
+}
+
+.images-wrapper {
+  display: inline-block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (max-width: 575px) {
+  .images-wrapper {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+  .images-wrapper {
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+  }
 }

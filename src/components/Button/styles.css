@@ -1,0 +1,106 @@
+.button {
+  border: none;
+  border-radius: var(--default-button-border-radius);
+  box-shadow: 1px 5px 10px var(--accent-shadow);
+  box-sizing: border-box;
+  color: var(--default-button-font-color);
+  cursor: pointer;
+  font-size: var(--default-font-size);
+  padding: 0.5rem 0.5rem;
+  transition: background-color 0.25s ease;
+}
+
+.button.default {
+  background-color: var(--default-button-bg-color);
+}
+
+.button.success {
+  background-color: var(--success);
+}
+
+.button.cancel {
+  background-color: var(--cancel);
+}
+
+.button.disabled {
+  background-color: var(--default-button-bg-disabled-color);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.button:active {
+  background-color: var(--accent);
+  color: var(--default-button-font-color);
+}
+
+.button:hover {
+  background-color: var(--accent);
+  transition: background-color 0.25s ease;
+}
+
+.button.book {
+  background-color: var(--default-book-bg-color);
+  color: var(--default-book-font-color);
+}
+
+.button.book:hover {
+  border: 2px solid var(--success);
+}
+
+.button-link {
+  color: var(--default-button-font-color);
+  text-decoration: none;
+}
+
+/* Fancy Button */
+.button.fancy {
+  background-color: var(--accent);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.button.fancy::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    #ff0000,
+    #ff7f00,
+    #ffff00,
+    #00ff00,
+    #0000ff,
+    #8b00ff,
+    #ff0000
+  );
+  animation: rotate 4s linear infinite;
+  z-index: -1;
+}
+
+.button.fancy::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  background: inherit;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.button.fancy:hover {
+  background-color: var(--success);
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+}
+
+.button.fancy:hover::before {
+  animation: rotate 2s linear infinite;
+}
