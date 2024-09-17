@@ -1,6 +1,7 @@
 .action-buttons {
   display: flex;
   gap: 0.1rem;
+  justify-content: space-between;
 }
 
 .book-description {
@@ -22,14 +23,20 @@
 
   display: flex;
   padding: 1rem;
-  width: 100%;
+  width: 75%;
+  flex-direction: column;
+}
+
+.product-image {
+  display: flex;
+  justify-content: center;
 }
 
 .product-image img {
   cursor: pointer;
-  height: 300px;
+  height: 100%;
   object-fit: cover;
-  width: 200px;
+  width: 50%;
 }
 
 .product-info {
@@ -47,6 +54,7 @@
 
 @media (max-width: 576px) {
   .product-container {
+    width: 95%;
     flex-direction: column;
   }
 

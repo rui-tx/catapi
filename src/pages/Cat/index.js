@@ -1,21 +1,34 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import Block from "../../components/Block";
+import Button from "../../components/Button";
 import "./styles.css";
+
+import ToastContext from "../../contexts/ToastContext";
 
 function Cat() {
   const [loading, setLoading] = useState(true);
+  const [catList, setCatList] = useState(localStorage.getItem("cats"));
   const [cat, setCat] = useState(null);
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { addToast } = useContext(ToastContext);
 
   // just for testing
   const api_key = "";
 
   useEffect(() => {
     const newCat = fetchCatById(id);
-  }, []);
+  }, [id]);
+
+  useEffect(() => {
+    if (!loading) {
+      navigate(`/cat/${cat.id}`);
+    }
+  }, [cat]);
 
   const fetchCatById = (id) => {
+    setLoading(true);
     const myHeaders = new Headers();
     myHeaders.append("x-api-key", api_key);
     myHeaders.append("Content-Type", "application/json");
@@ -43,6 +56,34 @@ function Cat() {
       });
   };
 
+  const handleFavourite = () => {
+    addToast("Favourited 😊", "toast-success");
+    setCat(getNextCat());
+  };
+
+  const handleVote = (vote) => {
+    if (vote === "up") {
+      addToast("Upvoted 😊", "toast-success");
+    } else {
+      addToast("Downvoted 😔", "");
+    }
+    setCat(getNextCat());
+  };
+
+  const getNextCat = () => {
+    const cats = JSON.parse(catList);
+    const currentIndex = cats.findIndex((cat) => cat.id === id);
+    const nextCat = cats[currentIndex + 1];
+    return nextCat ? nextCat : cats[0];
+  };
+
+  const getPreviousCat = () => {
+    const cats = JSON.parse(catList);
+    const currentIndex = cats.findIndex((cat) => cat.id === id);
+    const previousCat = cats[currentIndex - 1];
+    return previousCat ? previousCat : cats[cats.length - 1];
+  };
+
   return (
     <Block>
       {loading ? (
@@ -55,9 +96,7 @@ function Cat() {
             </div>
             <div className="product-info">
               <h1 className="book-title">
-                {cat.breeds && cat.breeds.length > 0
-                  ? cat.breeds[0].name
-                  : cat.id}
+                {cat.breeds && cat.breeds.length > 0 ? cat.breeds[0].name : ""}
               </h1>
               <p className="book-description">
                 {cat.width} x {cat.height}
@@ -95,6 +134,20 @@ function Cat() {
                     </p>
                   </div>
                 ))}
+              <div className="action-buttons">
+                <Button onClick={() => handleVote("down")}>👎</Button>
+                <Button btn="fancy" onClick={handleFavourite}>
+                  ❤️
+                </Button>
+                <Button onClick={() => handleVote("up")}>👍</Button>
+              </div>
+              <div className="action-buttons">
+                <Button onClick={() => setCat(getPreviousCat())}>
+                  Previous
+                </Button>
+
+                <Button onClick={() => setCat(getNextCat())}>Next</Button>
+              </div>
             </div>
           </div>
         </div>
