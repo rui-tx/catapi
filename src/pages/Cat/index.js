@@ -92,7 +92,11 @@ function Cat() {
         <div className="product-page">
           <div className="product-container">
             <div className="product-image">
-              <img src={cat.url} alt={`Cat '${cat.id}'`} />
+              <img
+                src={cat.url}
+                alt={`Cat '${cat.id}'`}
+                onClick={() => setCat(getNextCat())}
+              />
             </div>
             <div className="product-info">
               <h1 className="book-title">
