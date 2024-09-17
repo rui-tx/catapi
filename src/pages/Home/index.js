@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useState, useMemo, useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Block from "../../components/Block";
 import Button from "../../components/Button";
 import Cat from "../Cat";
@@ -8,12 +8,17 @@ import "./styles.css";
 const Home = () => {
   const [loading, setLoading] = useState(true);
   const [cats, setCats] = useState([]);
+  const scrollPositionRef = useRef(0);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const memoizedCats = useMemo(() => cats, [cats]);
 
   useEffect(() => {
     if (localStorage.getItem("cats")) {
       const localCatsShuffled = JSON.parse(localStorage.getItem("cats"));
-      localCatsShuffled.sort(() => Math.random() - 0.5);
-      localStorage.setItem("cats", JSON.stringify(localCatsShuffled));
+      // localCatsShuffled.sort(() => Math.random() - 0.5);
+      // localStorage.setItem("cats", JSON.stringify(localCatsShuffled));
       setCats(localCatsShuffled);
       setLoading(false);
     } else {
@@ -57,10 +62,16 @@ const Home = () => {
       });
   };
 
+  // Memoize the cats array to avoid re-renders
+
+  const handleImageClick = (cat) => {
+    navigate(`/cat/${cat}`);
+  };
+
   return (
     <Block blk="block-embossed">
       <div className="images-wrapper">
-        {cats.map((cat) => (
+        {memoizedCats.map((cat) => (
           <Block
             blk="block-embossed-center"
             key={cat.id + cat.url}
@@ -71,23 +82,21 @@ const Home = () => {
               position: "relative",
             }}
           >
-            <Link className="book-link" to={`/cat/${cat.id}`}>
-              <img
-                src={cat.url}
-                alt={cat.id}
-                key={cat.id}
-                onClick={() => handleCatInfo(cat)}
-                style={{ cursor: "pointer", borderRadius: "0.5rem" }}
-                width={cat.width}
-                height={cat.height}
-                styles={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                }}
-              />
-            </Link>
+            <img
+              src={cat.url}
+              alt={cat.id}
+              key={cat.id}
+              onClick={() => handleImageClick(cat.id)}
+              style={{ cursor: "pointer", borderRadius: "0.5rem" }}
+              width={cat.width}
+              height={cat.height}
+              styles={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+              }}
+            />
           </Block>
         ))}
       </div>

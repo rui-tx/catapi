@@ -8,13 +8,21 @@ function Cat() {
   const [cat, setCat] = useState(null);
   const { id } = useParams();
 
+  // just for testing
+  const api_key = "";
+
   useEffect(() => {
     const newCat = fetchCatById(id);
   }, []);
 
   const fetchCatById = (id) => {
+    const myHeaders = new Headers();
+    myHeaders.append("x-api-key", api_key);
+    myHeaders.append("Content-Type", "application/json");
+
     const requestOptions = {
       method: "GET",
+      headers: myHeaders,
       redirect: "follow",
     };
     fetch("https://api.thecatapi.com/v1/images/" + id, requestOptions)
@@ -36,18 +44,59 @@ function Cat() {
   };
 
   return (
-    <Block blk="block-embossed-center">
+    <Block>
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <div className="cat-info">
-          <h1>Cat Page </h1>
-
-          <img src={cat.url} alt={cat.id} key={cat.id} />
-          <p>ID: {cat.id}</p>
-          <p>URL: {cat.url}</p>
-          <p>Width: {cat.width}</p>
-          <p>Height: {cat.height}</p>
+        <div className="product-page">
+          <div className="product-container">
+            <div className="product-image">
+              <img src={cat.url} alt={`Cat '${cat.id}'`} />
+            </div>
+            <div className="product-info">
+              <h1 className="book-title">
+                {cat.breeds && cat.breeds.length > 0
+                  ? cat.breeds[0].name
+                  : cat.id}
+              </h1>
+              <p className="book-description">
+                {cat.width} x {cat.height}
+              </p>
+              {cat.breeds &&
+                cat.breeds.map((b, index) => (
+                  <div key={index}>
+                    <p>
+                      <strong>Breed Name: </strong>
+                      {b.name}
+                    </p>
+                    <p>
+                      <strong>Origin: </strong>
+                      {b.origin}
+                    </p>
+                    <p>
+                      <strong>Temperament: </strong>
+                      {b.temperament}
+                    </p>
+                    <p>
+                      <strong>Average life span: </strong>
+                      {b.life_span} years
+                    </p>
+                    <p>
+                      <strong>Typical weight: </strong>
+                      {b.weight.metric} kgs
+                      <strong> Imperial: </strong>
+                      {b.weight.imperial} pounds
+                    </p>
+                    <p></p>
+                    <p>
+                      <strong>
+                        <a href={b.wikipedia_url}>Wikipedia</a>
+                      </strong>
+                    </p>
+                  </div>
+                ))}
+            </div>
+          </div>
         </div>
       )}
     </Block>
