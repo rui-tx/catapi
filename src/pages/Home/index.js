@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState, useRef, forwardRef } from "react";
 import { useIntersection } from "../../hooks/useIntersection";
 import Block from "../../components/Block";
 import Button from "../../components/Button";
@@ -15,22 +15,38 @@ const Home = () => {
   const { addToast } = useContext(ToastContext);
   const triggerRef = useRef(null);
   const currenCatRef = useRef(null);
+  const firstBlockRef = useRef(null);
   const isVisible = useIntersection(triggerRef, "0px");
 
+  const ForwardedBlock = forwardRef((props, ref) => (
+    <Block {...props} innerRef={ref} />
+  ));
+
   useEffect(() => {
-    fetchCats();
+    if (localStorage.getItem("cats")) {
+      const localCatsShuffled = JSON.parse(localStorage.getItem("cats"));
+      localCatsShuffled.sort(() => Math.random() - 0.5);
+      localStorage.setItem("cats", JSON.stringify(localCatsShuffled));
+      setCats(localCatsShuffled);
+      setLoading(false);
+    } else {
+      fetchCats();
+    }
   }, []);
 
-  // useEffect(() => {
-  //   if (isVisible) {
-  //     fetchCats();
-  //   }
-  // }, [fetchCats, isVisible]);
+  const scrollToFirstBlock = () => {
+    if (firstBlockRef.current) {
+      firstBlockRef.current.scrollIntoView({ behavior: "smooth" });
+      console.log("Scrolled to first block");
+    }
+  };
 
   const handleCatInfo = (cat) => {
     addToast(cat.id + " - " + cat.url, "toast-success");
     setCurrentCat(cat);
     setCurrentCatInfo(fetchCatById(cat.id));
+    scrollToFirstBlock();
+
     //scrollToCurrentCat();
   };
 
@@ -50,12 +66,14 @@ const Home = () => {
 
         if (localStorage.getItem("cats")) {
           const localCats = JSON.parse(localStorage.getItem("cats"));
-          setCats([...localCats, ...data]);
+          const updatedCats = [...localCats, ...data];
+          setCats(updatedCats);
+          localStorage.setItem("cats", JSON.stringify(updatedCats));
         } else {
           setCats(data);
+          localStorage.setItem("cats", JSON.stringify(data));
         }
 
-        localStorage.setItem("cats", JSON.stringify(data));
         setLoading(false);
       })
       .catch((error) => {
@@ -85,38 +103,35 @@ const Home = () => {
   };
 
   return (
-    <Block blk="block-embossed" ref={currenCatRef}>
+    <ForwardedBlock blk="block-embossed" ref={firstBlockRef}>
       {currentCat && currentCatInfo && (
         <div className="cat-info">
           <p>ID: {currentCat.id}</p>
           <p>URL: {currentCat.url}</p>
           <p>Width: {currentCat.width}</p>
           <p>Height: {currentCat.height}</p>
+
+          <Block blk="block-embossed-center">
+            <img
+              src={currentCat.url}
+              alt={currentCat.id}
+              key={currentCat.id}
+              styles={{
+                cursor: "pointer",
+                borderRadius: "0.5rem",
+                maxWidth: "20%",
+                maxHeight: "70vh",
+              }}
+              onClick={() => setCurrentCat(null)}
+            />
+          </Block>
         </div>
-      )}
-      {currentCat && (
-        <Block blk="block-embossed-center">
-          <img
-            src={currentCat.url}
-            alt={currentCat.id}
-            key={currentCat.id}
-            width={currentCat.width}
-            height={currentCat.height}
-            styles={{
-              cursor: "pointer",
-              borderRadius: "0.5rem",
-              width: "20%",
-              height: "20%",
-            }}
-            onClick={() => setCurrentCat(null)}
-          />
-        </Block>
       )}
       <div className="images-wrapper">
         {cats.map((cat) => (
           <Block
             blk="block-embossed-center"
-            key={cat.id + "1"}
+            key={cat.id + cat.url}
             styles={{
               width: "100%",
               height: 0,
@@ -146,7 +161,7 @@ const Home = () => {
           <Button onClick={fetchCats}>Load more...</Button>
         </Block>
       )}
-    </Block>
+    </ForwardedBlock>
   );
 };
 

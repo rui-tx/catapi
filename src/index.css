@@ -2,9 +2,9 @@
   --background: #f9f9f9;
   --default-font-color: #4a4a4a;
   --default-font-shadow: #ffffff;
-  --default-border-color: #000080;
+  --default-border-color: #ff9494;
   --default-border-radius: 0.5rem;
-  --accent: #000080;
+  --accent: #ff9494;
   --accent-shadow: #00008042;
   --hover-shadow: #00800050;
 
@@ -20,10 +20,10 @@
 
   /* Button */
   --default-button-font-color: #ffffff;
-  --default-button-bg-color: #000099;
+  --default-button-bg-color: #ff9494;
   --default-button-bg-disabled-color: #4a4a4a;
 
-  --default-button-bg-color-hover: #000080;
+  --default-button-bg-color-hover: #ff9494;
   --default-button-border-radius: 0.5rem;
 
   /* Input */
@@ -31,16 +31,16 @@
   --default-input-bg-color: #ffffff;
   --default-input-bg-disabled-color: #4a4a4a25;
   --default-input-border-color: #4a4a4a;
-  --default-input-focus-color: #00008065; /* with transparency */
+  --default-input-focus-color: #ff949465; /* with transparency */
   --default-input-border-radius: 0.5rem;
 
   /* Book */
   --default-book-font-color: #4a4a4a;
   --default-book-bg-color: #f9f9f9;
-  --default-book-border-color: #00008010;
+  --default-book-border-color: #ff949410;
 
   /* Modal */
-  --default-modal-bg-color: #00008050;
+  --default-modal-bg-color: #ff949450;
 
   /* Toast */
   --default-toast-bg-color: #4a4a4a;
@@ -61,7 +61,7 @@
   --default-navbar-font-color: #4a4a4a;
   --default-navbar-border-color: #4a4a4a05;
   --default-navbar-border-radius: 0.5rem;
-  --default-navbar-button-border-color: #000080;
+  --default-navbar-button-border-color: #ff9494;
 
   --default-navbar-hamburger-overlay-color: #00008000;
   --default-navbar-hamburger-overlay-blur: 12px; /*  DOES NOT WORK CHANGE ON THE COMPONENT */
@@ -104,16 +104,16 @@ code {
 
 @media (max-width: 575px) {
   .images-wrapper {
-    -webkit-column-count: 2;
-    -moz-column-count: 2;
-    column-count: 2;
+    -webkit-column-count: 1;
+    -moz-column-count: 1;
+    column-count: 1;
   }
 }
 
 @media (min-width: 576px) and (max-width: 767px) {
   .images-wrapper {
-    -webkit-column-count: 4;
-    -moz-column-count: 4;
-    column-count: 4;
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
   }
 }
