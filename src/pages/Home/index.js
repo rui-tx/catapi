@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState, useMemo, useRef } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Block from "../../components/Block";
 import Button from "../../components/Button";
 import Cat from "../Cat";
@@ -8,6 +8,7 @@ import "./styles.css";
 const Home = () => {
   const [loading, setLoading] = useState(true);
   const [cats, setCats] = useState([]);
+  const { id } = useParams();
   const scrollPositionRef = useRef(0);
   const navigate = useNavigate();
   const location = useLocation();
@@ -62,8 +63,6 @@ const Home = () => {
       });
   };
 
-  // Memoize the cats array to avoid re-renders
-
   const handleImageClick = (cat) => {
     navigate(`/cat/${cat}`);
   };
@@ -83,6 +82,8 @@ const Home = () => {
             }}
           >
             <img
+              className=""
+              id={cat.id}
               src={cat.url}
               alt={cat.id}
               key={cat.id}

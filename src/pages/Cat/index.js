@@ -74,6 +74,12 @@ function Cat() {
     const cats = JSON.parse(catList);
     const currentIndex = cats.findIndex((cat) => cat.id === id);
     const nextCat = cats[currentIndex + 1];
+    if (!nextCat) {
+      addToast(
+        "Yey! You got to the bottom of the list 😊. Load more cats from the Home page.",
+        "toast-success"
+      );
+    }
     return nextCat ? nextCat : cats[0];
   };
 
@@ -95,6 +101,7 @@ function Cat() {
               <img
                 src={cat.url}
                 alt={`Cat '${cat.id}'`}
+                style={{ borderRadius: "0.5rem" }}
                 onClick={() => setCat(getNextCat())}
               />
             </div>
@@ -149,8 +156,8 @@ function Cat() {
                 <Button onClick={() => setCat(getPreviousCat())}>
                   Previous
                 </Button>
-
-                <Button onClick={() => setCat(getNextCat())}>Next</Button>
+                <Button onClick={() => navigate(`/home/${cat.id}`)}>🏠</Button>
+                <Button onClick={() => setCat(getPreviousCat())}>Next</Button>
               </div>
             </div>
           </div>
