@@ -5,22 +5,29 @@ import Footer from "./partials/Footer";
 import Home from "./pages/Home";
 import Cat from "./pages/Cat";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import Logout from "./pages/Logout";
 
+import AuthProvider from "./contexts/AuthProvider";
 import ToastProvider from "./contexts/ToastProvider";
 
 function App() {
   return (
     <BrowserRouter>
-      <ToastProvider>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home/:id" element={<Home />} />
-          <Route path="/cat/" element={<Home />} />
-          <Route path="/cat/:id" element={<Cat />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </ToastProvider>
+      <AuthProvider>
+        <ToastProvider>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/home/:id" element={<Home />} />
+            <Route path="/cat/" element={<Home />} />
+            <Route path="/cat/:id" element={<Cat />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </ToastProvider>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

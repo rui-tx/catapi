@@ -1,0 +1,27 @@
+.logout {
+  margin: 0 auto;
+  max-width: 50%;
+  padding: 1rem 1rem;
+  text-align: center;
+}
+
+.logout h1 {
+  color: var(--accent);
+  font-size: 72px;
+  margin-bottom: 0;
+}
+
+.logout h2 {
+  font-size: 24px;
+  margin-top: 0;
+}
+
+.logout-button-group {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+.logout-home-link {
+  color: var(--default-button-font-color);
+  text-decoration: none;
+}

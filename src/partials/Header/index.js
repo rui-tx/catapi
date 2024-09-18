@@ -3,8 +3,11 @@ import { Link, useLocation } from "react-router-dom";
 import Block from "../../components/Block";
 import "./styles.css";
 
+import AuthContext from "../../contexts/AuthContext";
+
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { isLoggedIn } = useContext(AuthContext);
   const location = useLocation();
   const { hash, pathname, search } = location;
 
@@ -58,13 +61,23 @@ function Header() {
           <div className="line"></div>
         </div>
         <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
-          <Link
-            to="/"
-            onClick={closeMenu}
-            className={isActive("/books") ? "active" : ""}
-          >
-            Home
-          </Link>
+          {isLoggedIn ? (
+            <Link
+              to="/logout"
+              onClick={closeMenu}
+              className={isActive("/logout") ? "active" : ""}
+            >
+              Logout
+            </Link>
+          ) : (
+            <Link
+              to="/login"
+              onClick={closeMenu}
+              className={isActive("/login") ? "active" : ""}
+            >
+              Login
+            </Link>
+          )}
         </nav>
       </header>
       <div className="breadcrumbs">
