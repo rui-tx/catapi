@@ -186,13 +186,6 @@ function Cat() {
           return;
         }
 
-        // const newCat = {
-        //   id: cat.id,
-        //   url: cat.url,
-        //   favouriteId: cat.id,
-        // };
-
-        // setCat(newCat);
         setIsFavourite(true);
         setFavouriteId(data.id);
 
@@ -260,7 +253,7 @@ function Cat() {
         setIsFavourite(false);
         setFavouriteId(null);
 
-        addToast("Cat is not your favourite anymore... 😔", "toast-success");
+        addToast("Cat is not your favourite anymore... 😔", "");
         return data;
       })
       .catch((error) => {
@@ -269,12 +262,75 @@ function Cat() {
   };
 
   const handleVote = (vote) => {
-    if (vote === "up") {
-      addToast("Upvoted 😊", "toast-success");
-    } else {
-      addToast("Downvoted 😔", "");
+    if (!isLoggedIn) {
+      addToast("You need to login to rank cats 😔", "toast-error");
+      return;
     }
-    setCat(getNextCat());
+    const value = vote === "up" ? 1 : -1;
+
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("x-api-key", api_key);
+
+    const raw =
+      '{\n	"image_id":"' +
+      cat.id +
+      '",\n	"sub_id": "' +
+      user +
+      '",\n	"value":"' +
+      value +
+      '"\n}';
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch("/v1/votes", requestOptions)
+      .then((response) => {
+        if (response.status !== 200 && response.status !== 201) {
+          switch (response.status) {
+            case 401:
+              addToast(
+                "You need to set your API key to rank a cat 😔",
+                "toast-error"
+              );
+              return;
+            case 403:
+              addToast(
+                "You are not allowed to rank this cat 😔",
+                "toast-error"
+              );
+              return;
+            default:
+              addToast("Something went wrong... 😔", "toast-error");
+              console.error(response);
+              return;
+          }
+        }
+        return response.text();
+      })
+      .then((result) => {
+        if (!result) return;
+
+        const data = JSON.parse(result);
+        if (!data) {
+          console.error("Fetch data failed: ", data);
+          return;
+        }
+
+        if (vote === "up") {
+          addToast("Upvoted 😊", "toast-success");
+        } else {
+          addToast("Downvoted 😔", "");
+        }
+
+        return data;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const getNextCat = () => {
