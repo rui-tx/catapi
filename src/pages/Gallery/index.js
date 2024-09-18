@@ -4,7 +4,7 @@ import Block from "../../components/Block";
 import Button from "../../components/Button";
 import "./styles.css";
 
-const Home = () => {
+const Gallery = () => {
   const [loading, setLoading] = useState(true);
   const [cats, setCats] = useState([]);
   const navigate = useNavigate();
@@ -61,10 +61,36 @@ const Home = () => {
 
   return (
     <Block blk="block-embossed">
-      <p>Welcome to the Cat API</p>
-      <p>Feel free to browse the gallery</p>
+      <div className="images-wrapper">
+        {memoizedCats.map((cat) => (
+          <Block blk="block-embossed-center" key={cat.id + cat.url}>
+            <img
+              id={cat.id}
+              src={cat.url}
+              alt={cat.id}
+              key={cat.id}
+              onClick={() => handleImageClick(cat.id)}
+              width={cat.width}
+              height={cat.height}
+              style={{
+                cursor: "pointer",
+                borderRadius: "0.5rem",
+              }}
+            />
+          </Block>
+        ))}
+      </div>
+      {loading ? (
+        <Block blk="block-embossed-center">
+          <p>Loading...</p>
+        </Block>
+      ) : (
+        <Block blk="block-embossed-center">
+          <Button onClick={fetchCats}>Load more...</Button>
+        </Block>
+      )}
     </Block>
   );
 };
 
-export default Home;
+export default Gallery;
