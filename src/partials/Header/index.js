@@ -61,6 +61,15 @@ function Header() {
           <div className="line"></div>
         </div>
         <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
+          {isLoggedIn && (
+            <Link
+              to="/favourites"
+              onClick={closeMenu}
+              className={isActive("/favourites") ? "active" : ""}
+            >
+              Favourites
+            </Link>
+          )}
           {isLoggedIn ? (
             <Link
               to="/logout"

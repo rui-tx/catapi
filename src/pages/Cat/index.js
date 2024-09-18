@@ -1,36 +1,42 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import useSwipe from "../../hooks/useSwipe";
+import useApi from "../../hooks/useApi";
 import Block from "../../components/Block";
 import Button from "../../components/Button";
 import "./styles.css";
 
 import ToastContext from "../../contexts/ToastContext";
+import AuthContext from "../../contexts/AuthContext";
 
 function Cat() {
   const [loading, setLoading] = useState(true);
   const [catList, setCatList] = useState(localStorage.getItem("cats"));
   const [cat, setCat] = useState(null);
+  const [isFavourite, setIsFavourite] = useState(false);
+  const [favouriteId, setFavouriteId] = useState(null);
   const [showHeart, setShowHeart] = useState(false);
-
   const { id } = useParams();
+  const { isLoggedIn, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const { addToast } = useContext(ToastContext);
-
-  // just for testing
-  const api_key = "";
 
   const { onTouchStart, onTouchMove, onTouchEnd } = useSwipe(
     () => setCat(getNextCat()),
     () => setCat(getPreviousCat())
   );
 
+  // just for testing
+  const api_key = "";
+
   useEffect(() => {
-    const newCat = fetchCatById(id);
+    setIsFavourite(false);
+    fetchCatById(id);
+    fetchFavouriteCats();
+    console.log(id);
   }, [id]);
 
   const fetchCatById = (id) => {
-    setLoading(true);
     const myHeaders = new Headers();
     myHeaders.append("x-api-key", api_key);
     myHeaders.append("Content-Type", "application/json");
@@ -58,13 +64,209 @@ function Cat() {
       });
   };
 
-  const handleFavourite = () => {
-    setShowHeart(true);
-    setTimeout(() => {
-      setShowHeart(false);
-    }, 1000);
+  const fetchFavouriteCats = () => {
+    setLoading(true);
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("x-api-key", api_key);
 
-    addToast("Favourited 😊", "toast-success");
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(
+      "/v1/favourites?sub_id=" + user + "&order=DESC&attach_image=1",
+      requestOptions
+    )
+      .then((response) => {
+        if (response.status !== 200) {
+          switch (response.status) {
+            case 401:
+              addToast(
+                "You need to set your API key to see your favourites 😔",
+                "toast-error"
+              );
+              setLoading(false);
+              return;
+            case 403:
+              addToast(
+                "You are not allowed to see your favourites 😔",
+                "toast-error"
+              );
+              setLoading(false);
+              return;
+            default:
+              addToast("Something went wrong... 😔", "toast-error");
+              console.error(response);
+              setLoading(false);
+              return;
+          }
+        }
+        return response.text();
+      })
+      .then((result) => {
+        if (!result) {
+          return;
+        }
+        const data = JSON.parse(result);
+        if (!data) {
+          console.error("Fetch data failed: ", data);
+          return;
+        }
+        for (let c of data) {
+          if (c.image_id === id) {
+            setIsFavourite(true);
+            setFavouriteId(c.id);
+            break;
+          }
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const handleFavourite = () => {
+    if (isFavourite) {
+      handleDeleteFavourite();
+      return;
+    }
+
+    if (!isLoggedIn) {
+      addToast("You need to login to favourite a cat 😔", "toast-error");
+      return;
+    }
+
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("x-api-key", api_key);
+
+    const raw = '{\n	"image_id":"' + cat.id + '",\n	"sub_id": "' + user + '"\n}';
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch("/v1/favourites", requestOptions)
+      .then((response) => {
+        if (response.status !== 200) {
+          switch (response.status) {
+            case 401:
+              addToast(
+                "You need to set your API key to favourite a cat 😔",
+                "toast-error"
+              );
+              return;
+            case 403:
+              addToast(
+                "You are not allowed to favourite this cat 😔",
+                "toast-error"
+              );
+              return;
+            default:
+              addToast("Something went wrong... 😔", "toast-error");
+              console.error(response);
+              return;
+          }
+        }
+        return response.text();
+      })
+      .then((result) => {
+        if (!result) return;
+
+        const data = JSON.parse(result);
+        if (!data) {
+          console.error("Fetch data failed: ", data);
+          return;
+        }
+
+        // const newCat = {
+        //   id: cat.id,
+        //   url: cat.url,
+        //   favouriteId: cat.id,
+        // };
+
+        // setCat(newCat);
+        setIsFavourite(true);
+        setFavouriteId(data.id);
+
+        setShowHeart(true);
+        setTimeout(() => {
+          setShowHeart(false);
+        }, 1000);
+
+        addToast("Favourited 😊", "toast-success");
+        return data;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleDeleteFavourite = () => {
+    if (!isLoggedIn) {
+      addToast("You need to login to use favourite features 😔", "toast-error");
+      return;
+    }
+
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("x-api-key", api_key);
+
+    const requestOptions = {
+      method: "DELETE",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+    fetch("/v1/favourites/" + favouriteId, requestOptions)
+      .then((response) => {
+        if (response.status !== 200) {
+          switch (response.status) {
+            case 401:
+              addToast(
+                "You need to set your API key to use this feature 😔",
+                "toast-error"
+              );
+              return;
+            case 403:
+              addToast(
+                "You are not allowed to use this feature 😔",
+                "toast-error"
+              );
+              return;
+            default:
+              addToast("Something went wrong... 😔", "toast-error");
+              console.error(response);
+              return;
+          }
+        }
+        return response.text();
+      })
+      .then((result) => {
+        if (!result) return;
+
+        const data = JSON.parse(result);
+        if (!data) {
+          console.error("Fetch data failed: ", data);
+          return;
+        }
+
+        setIsFavourite(false);
+        setFavouriteId(null);
+
+        addToast("Cat is not your favourite anymore... 😔", "toast-success");
+        return data;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const handleVote = (vote) => {
@@ -118,7 +320,7 @@ function Cat() {
                 src={cat?.url}
                 alt={`Cat '${cat?.id}'`}
                 style={{ borderRadius: "0.5rem" }}
-                onClick={handleFavourite}
+                {...(!isFavourite && { onClick: handleFavourite })}
               />
               {showHeart && <div className="heart-animation">❤️</div>}
               <div className="image-overlay">
@@ -134,9 +336,16 @@ function Cat() {
                 >
                   👎
                 </button>
-                <button className="overlay-button" onClick={handleFavourite}>
-                  ❤️
-                </button>
+                {!isFavourite ? (
+                  <button className="overlay-button" onClick={handleFavourite}>
+                    ❤️
+                  </button>
+                ) : (
+                  <button className="overlay-button" onClick={handleFavourite}>
+                    💔
+                  </button>
+                )}
+
                 <button
                   className="overlay-button"
                   onClick={() => handleVote("up")}
@@ -219,3 +428,44 @@ function Cat() {
 </div> */
 }
 export default Cat;
+
+// setLoading(true);
+// const myHeaders = new Headers();
+// myHeaders.append("x-api-key", api_key);
+// myHeaders.append("Content-Type", "application/json");
+// const requestOptions = {
+//   method: "GET",
+//   headers: myHeaders,
+//   redirect: "follow",
+// };
+// const apiResponse = useApi(
+//   "https://api.thecatapi.com/v1/images/" + id,
+//   requestOptions
+// );
+
+// if (!apiResponse.success) {
+//   switch (apiResponse.status) {
+//     case 401:
+//       addToast(
+//         "You need to set your API key to see your favourites 😔",
+//         "toast-error"
+//       );
+//       setLoading(false);
+//       return;
+//     case 403:
+//       addToast(
+//         "You are not allowed to see your favourites 😔",
+//         "toast-error"
+//       );
+//       setLoading(false);
+//       return;
+//     default:
+//       addToast("Something went wrong... 😔", "toast-error");
+//       console.error(apiResponse);
+//       setLoading(false);
+//       return;
+//   }
+// }
+// setCat(apiResponse.data);
+// setLoading(false);
+// return apiResponse.data;
