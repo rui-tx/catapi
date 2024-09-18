@@ -62,6 +62,7 @@ const Search = () => {
         console.error(error);
       });
   };
+
   const fetchCats = () => {
     const url = `https://api.thecatapi.com/v1/images/search?limit=${limit}&page=${page}&order=${order}&has_breeds=${hasBreeds}&breed_ids=${breedIds}&category_ids=${categoryIds}&sub_ids=${subIds}`;
     const myHeaders = new Headers();
@@ -163,9 +164,11 @@ const Search = () => {
           </select>
         </label>
         <br />
-        <label>
+
+        <label style={{ display: "none" }}>
           Page:
           <input
+            style={{ display: "none" }}
             type="number"
             value={page}
             disabled
@@ -236,7 +239,7 @@ const Search = () => {
               onChange={(e) =>
                 setSearchParams({
                   limit,
-                  page,
+                  page: 1,
                   order,
                   has_breeds: hasBreeds,
                   breed_ids: e.target.value,
@@ -245,7 +248,6 @@ const Search = () => {
                 })
               }
             >
-              <option value="">Any</option>
               {memoizedBreeds.map((breed) => (
                 <option key={breed.id} value={breed.id}>
                   {breed.name}
