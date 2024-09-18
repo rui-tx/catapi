@@ -1,17 +1,13 @@
-import { useContext, useEffect, useState, useMemo, useRef } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState, useMemo, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Block from "../../components/Block";
 import Button from "../../components/Button";
-import Cat from "../Cat";
 import "./styles.css";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
   const [cats, setCats] = useState([]);
-  const { id } = useParams();
-  const scrollPositionRef = useRef(0);
   const navigate = useNavigate();
-  const location = useLocation();
 
   const memoizedCats = useMemo(() => cats, [cats]);
 
@@ -26,10 +22,6 @@ const Home = () => {
       fetchCats();
     }
   }, []);
-
-  const handleCatInfo = () => {
-    return <Cat />;
-  };
 
   const fetchCats = () => {
     const requestOptions = {
@@ -71,31 +63,18 @@ const Home = () => {
     <Block blk="block-embossed">
       <div className="images-wrapper">
         {memoizedCats.map((cat) => (
-          <Block
-            blk="block-embossed-center"
-            key={cat.id + cat.url}
-            styles={{
-              width: "100%",
-              height: 0,
-              paddingTop: "50%",
-              position: "relative",
-            }}
-          >
+          <Block blk="block-embossed-center" key={cat.id + cat.url}>
             <img
-              className=""
               id={cat.id}
               src={cat.url}
               alt={cat.id}
               key={cat.id}
               onClick={() => handleImageClick(cat.id)}
-              style={{ cursor: "pointer", borderRadius: "0.5rem" }}
               width={cat.width}
               height={cat.height}
-              styles={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
+              style={{
+                cursor: "pointer",
+                borderRadius: "0.5rem",
               }}
             />
           </Block>

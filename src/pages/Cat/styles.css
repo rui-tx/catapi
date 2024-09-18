@@ -23,18 +23,47 @@
 
   display: flex;
   padding: 1rem;
+
   width: 75%;
   flex-direction: column;
 }
 
 .product-image {
+  position: relative;
   display: flex;
   justify-content: center;
 }
 
+.image-overlay {
+  position: absolute;
+  left: 0;
+  bottom: 0.1rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+  border-radius: 0.5rem;
+
+  background-color: var(--accent-fade); /* Semi-transparent background */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.product-image:hover .image-overlay {
+  opacity: 1; /* Show overlay on hover */
+}
+
+.overlay-button {
+  background-color: #fff;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
 .product-image img {
   cursor: pointer;
-  height: 100%;
   object-fit: cover;
   width: 50%;
 }
@@ -50,6 +79,32 @@
   display: flex;
   justify-content: center;
   width: 100%;
+}
+
+.heart-animation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 8rem; /* Adjust the size of the heart */
+  opacity: 1;
+  animation: fadeOut 1s forwards; /* Fades out over 1 second */
+  pointer-events: none; /* Prevent interaction with the heart */
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.5); /* Scale heart slightly */
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2); /* Fully fades and scales */
+  }
 }
 
 @media (max-width: 576px) {

@@ -1,5 +1,6 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import useSwipe from "../../hooks/useSwipe";
 import Block from "../../components/Block";
 import Button from "../../components/Button";
 import "./styles.css";
@@ -10,6 +11,8 @@ function Cat() {
   const [loading, setLoading] = useState(true);
   const [catList, setCatList] = useState(localStorage.getItem("cats"));
   const [cat, setCat] = useState(null);
+  const [showHeart, setShowHeart] = useState(false);
+
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToast } = useContext(ToastContext);
@@ -17,15 +20,14 @@ function Cat() {
   // just for testing
   const api_key = "";
 
+  const { onTouchStart, onTouchMove, onTouchEnd } = useSwipe(
+    () => setCat(getNextCat()),
+    () => setCat(getPreviousCat())
+  );
+
   useEffect(() => {
     const newCat = fetchCatById(id);
   }, [id]);
-
-  useEffect(() => {
-    if (!loading) {
-      navigate(`/cat/${cat.id}`);
-    }
-  }, [cat]);
 
   const fetchCatById = (id) => {
     setLoading(true);
@@ -57,8 +59,12 @@ function Cat() {
   };
 
   const handleFavourite = () => {
+    setShowHeart(true);
+    setTimeout(() => {
+      setShowHeart(false);
+    }, 1000);
+
     addToast("Favourited 😊", "toast-success");
-    setCat(getNextCat());
   };
 
   const handleVote = (vote) => {
@@ -80,14 +86,19 @@ function Cat() {
         "toast-success"
       );
     }
-    return nextCat ? nextCat : cats[0];
+
+    return nextCat
+      ? navigate(`/cat/${nextCat.id}`)
+      : navigate(`/cat/${cats[0].id}`);
   };
 
   const getPreviousCat = () => {
     const cats = JSON.parse(catList);
     const currentIndex = cats.findIndex((cat) => cat.id === id);
     const previousCat = cats[currentIndex - 1];
-    return previousCat ? previousCat : cats[cats.length - 1];
+    return previousCat
+      ? navigate(`/cat/${previousCat.id}`)
+      : navigate(`/cat/${cats[cats.length - 1].id}`);
   };
 
   return (
@@ -96,24 +107,62 @@ function Cat() {
         <p>Loading...</p>
       ) : (
         <div className="product-page">
-          <div className="product-container">
+          <div
+            className="product-container"
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          >
             <div className="product-image">
               <img
-                src={cat.url}
-                alt={`Cat '${cat.id}'`}
+                src={cat?.url}
+                alt={`Cat '${cat?.id}'`}
                 style={{ borderRadius: "0.5rem" }}
-                onClick={() => setCat(getNextCat())}
+                onClick={handleFavourite}
               />
+              {showHeart && <div className="heart-animation">❤️</div>}
+              <div className="image-overlay">
+                <button
+                  className="overlay-button"
+                  onClick={() => setCat(getPreviousCat())}
+                >
+                  👈
+                </button>
+                <button
+                  className="overlay-button"
+                  onClick={() => handleVote("down")}
+                >
+                  👎
+                </button>
+                <button className="overlay-button" onClick={handleFavourite}>
+                  ❤️
+                </button>
+                <button
+                  className="overlay-button"
+                  onClick={() => handleVote("up")}
+                >
+                  👍
+                </button>
+
+                <button
+                  className="overlay-button"
+                  onClick={() => setCat(getNextCat())}
+                >
+                  👉
+                </button>
+              </div>
             </div>
             <div className="product-info">
               <h1 className="book-title">
-                {cat.breeds && cat.breeds.length > 0 ? cat.breeds[0].name : ""}
+                {cat?.breeds && cat?.breeds.length > 0
+                  ? cat?.breeds[0].name
+                  : ""}
               </h1>
               <p className="book-description">
-                {cat.width} x {cat.height}
+                {cat?.width} x {cat?.height}
               </p>
-              {cat.breeds &&
-                cat.breeds.map((b, index) => (
+              {cat?.breeds &&
+                cat?.breeds.map((b, index) => (
                   <div key={index}>
                     <p>
                       <strong>Breed Name: </strong>
@@ -145,20 +194,6 @@ function Cat() {
                     </p>
                   </div>
                 ))}
-              <div className="action-buttons">
-                <Button onClick={() => handleVote("down")}>👎</Button>
-                <Button btn="fancy" onClick={handleFavourite}>
-                  ❤️
-                </Button>
-                <Button onClick={() => handleVote("up")}>👍</Button>
-              </div>
-              <div className="action-buttons">
-                <Button onClick={() => setCat(getPreviousCat())}>
-                  Previous
-                </Button>
-                <Button onClick={() => navigate(`/home/${cat.id}`)}>🏠</Button>
-                <Button onClick={() => setCat(getPreviousCat())}>Next</Button>
-              </div>
             </div>
           </div>
         </div>
@@ -166,5 +201,21 @@ function Cat() {
     </Block>
   );
 }
-
+//<Button onClick={() => navigate(`/home/${cat.id}`)}>🏠</Button>
+{
+  /* <div className="action-buttons">
+<Button onClick={() => handleVote("down")}>👎</Button>
+<Button btn="fancy" onClick={handleFavourite}>
+  ❤️
+</Button>
+<Button onClick={() => handleVote("up")}>👍</Button>
+</div>
+<div className="action-buttons">
+<Button onClick={() => setCat(getPreviousCat())}>
+  Previous
+</Button>
+<Button onClick={() => navigate(`/`)}>🏠</Button>
+<Button onClick={() => setCat(getNextCat())}>Next</Button>
+</div> */
+}
 export default Cat;
