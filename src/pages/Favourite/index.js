@@ -19,7 +19,7 @@ const Favourite = () => {
   }, []);
 
   // just for testing
-  const api_key = "";
+  const api_key = process.env.REACT_APP_CAT_API_KEY;
 
   const fetchFavouriteCats = () => {
     setLoading(true);

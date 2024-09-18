@@ -27,13 +27,12 @@ function Cat() {
   );
 
   // just for testing
-  const api_key = "";
+  const api_key = process.env.REACT_APP_CAT_API_KEY;
 
   useEffect(() => {
     setIsFavourite(false);
     fetchCatById(id);
     fetchFavouriteCats();
-    console.log(id);
   }, [id]);
 
   const fetchCatById = (id) => {
