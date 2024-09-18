@@ -85,7 +85,6 @@ const Search = () => {
         setCats(data);
         localStorage.setItem("cats", JSON.stringify(data));
         setLoading(false);
-        console.log(data);
       })
       .catch((error) => {
         setLoading(false);
