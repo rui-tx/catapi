@@ -338,10 +338,7 @@ function Cat() {
     const currentIndex = cats.findIndex((cat) => cat.id === id);
     const nextCat = cats[currentIndex + 1];
     if (!nextCat) {
-      addToast(
-        "Yey! You got to the bottom of the list 😊. Load more cats from the Home page.",
-        "toast-success"
-      );
+      addToast("You got to the end of the list 😊", "toast-success");
     }
 
     return nextCat

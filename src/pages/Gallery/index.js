@@ -13,10 +13,13 @@ const Gallery = () => {
 
   useEffect(() => {
     if (localStorage.getItem("cats")) {
-      const localCatsShuffled = JSON.parse(localStorage.getItem("cats"));
+      localStorage.removeItem("cats");
+      // disable for now
+      // const localCatsShuffled = JSON.parse(localStorage.getItem("cats"));
       // localCatsShuffled.sort(() => Math.random() - 0.5);
       // localStorage.setItem("cats", JSON.stringify(localCatsShuffled));
-      setCats(localCatsShuffled);
+      // setCats(localCatsShuffled);
+      fetchCats();
       setLoading(false);
     } else {
       fetchCats();

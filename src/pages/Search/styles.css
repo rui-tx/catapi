@@ -1,0 +1,20 @@
+.cat {
+  border: 0px solid var(--default-book-border-color);
+  border-radius: 0.1rem;
+  box-sizing: border-box;
+  cursor: pointer;
+  height: 22rem;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+  width: 16rem;
+}
+
+.cat-list {
+  margin: 0 auto;
+  max-width: 90%;
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
