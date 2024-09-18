@@ -82,7 +82,9 @@ const Favourite = () => {
           };
         });
 
-        setCats([...cats, ...newCats]);
+        const updatedCats = [...cats, ...newCats];
+        setCats(updatedCats);
+        localStorage.setItem("cats", JSON.stringify(updatedCats));
         setLoading(false);
       })
       .catch((error) => {

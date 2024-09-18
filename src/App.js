@@ -11,6 +11,7 @@ import Logout from "./pages/Logout";
 import Favourite from "./pages/Favourite";
 import Search from "./pages/Search";
 import Breed from "./pages/Breed";
+import VoteHistory from "./pages/VoteHistory";
 
 import AuthProvider from "./contexts/AuthProvider";
 import ToastProvider from "./contexts/ToastProvider";
@@ -25,12 +26,13 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/home/:id" element={<Home />} />
             <Route path="/gallery" element={<Gallery />} />
-            <Route path="/cat/" element={<Home />} />
+            <Route path="/cat/" element={<Gallery />} />
             <Route path="/cat/:id" element={<Cat />} />
             <Route path="/favourites" element={<Favourite />} />
             <Route path="/search" element={<Search />} />
             <Route path="/breed/" element={<Breed />} />
             <Route path="/breed/:id" element={<Breed />} />
+            <Route path="/vote_history" element={<VoteHistory />} />
             <Route path="/login" element={<Login />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="*" element={<NotFound />} />

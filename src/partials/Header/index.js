@@ -91,6 +91,13 @@ function Header() {
               Favourites
             </Link>
           )}
+          <Link
+            to="/vote_history"
+            onClick={closeMenu}
+            className={isActive("/vote_history") ? "active" : ""}
+          >
+            Votes
+          </Link>
           {isLoggedIn ? (
             <Link
               to="/logout"
