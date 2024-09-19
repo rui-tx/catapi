@@ -1,10 +1,6 @@
-import styles from "./styles.css";
-
+import { BlockStyles } from "../BlockStyles";
 const Block = ({ children, blk }) => {
-  if (blk) {
-    return <div className={`block ${blk}`}>{children}</div>;
-  }
-  return <div className="block">{children}</div>;
+  return <BlockStyles className={blk}>{children}</BlockStyles>;
 };
 
 export default Block;
