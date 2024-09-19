@@ -1,3 +1,6 @@
+![Tests](https://github.com/rui-tx/catapi/actions/workflows/playwright.yml/badge.svg)
+![Website Deploy](https://deploy-badge.vercel.app/?url=https://catapi-eight.vercel.app/&name=catapi-eight.vercel.app)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
