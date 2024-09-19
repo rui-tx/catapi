@@ -67,6 +67,7 @@ const Favourite = () => {
         if (!result) {
           return;
         }
+        console.log(result);
         const data = JSON.parse(result);
         if (!data) {
           console.error("Fetch data failed: ", data);
