@@ -99,6 +99,7 @@ const Favourite = () => {
 
   return (
     <Block blk="block-embossed">
+      {process.env.REACT_APP_CAT_API_KEY}
       <div className="images-wrapper">
         {cats.map((cat) => (
           <Block blk="block-embossed-center" key={cat.id + cat.url}>
