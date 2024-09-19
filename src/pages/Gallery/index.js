@@ -13,13 +13,13 @@ const Gallery = () => {
 
   useEffect(() => {
     if (localStorage.getItem("cats")) {
-      localStorage.removeItem("cats");
+      //localStorage.removeItem("cats");
       // disable for now
-      // const localCatsShuffled = JSON.parse(localStorage.getItem("cats"));
+      const localCatsShuffled = JSON.parse(localStorage.getItem("cats"));
       // localCatsShuffled.sort(() => Math.random() - 0.5);
       // localStorage.setItem("cats", JSON.stringify(localCatsShuffled));
-      // setCats(localCatsShuffled);
-      fetchCats();
+      setCats(localCatsShuffled);
+      //fetchCats();
       setLoading(false);
     } else {
       fetchCats();
@@ -89,7 +89,9 @@ const Gallery = () => {
         </Block>
       ) : (
         <Block blk="block-embossed-center">
-          <Button onClick={fetchCats}>Load more...</Button>
+          <Button btn="default" onClick={fetchCats}>
+            Load more...
+          </Button>
         </Block>
       )}
     </Block>

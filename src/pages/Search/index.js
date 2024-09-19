@@ -2,8 +2,9 @@ import { useEffect, useState, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Block from "../../components/Block";
 import Button from "../../components/Button";
+import Input from "../../components/Input";
+import Select from "../../components/Select";
 import "./styles.css";
-import { BsDatabaseDown } from "react-icons/bs";
 
 const Search = () => {
   const [loading, setLoading] = useState(true);
@@ -12,9 +13,9 @@ const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const limit = searchParams.get("limit") || 5;
   const page = searchParams.get("page") || 1;
-  const order = searchParams.get("order") || "DESC";
+  const order = searchParams.get("order") || "RND";
   const hasBreeds = searchParams.get("has_breeds") || "";
-  const breedIds = searchParams.get("breed_ids") || "";
+  const breedIds = searchParams.get("breed_ids") || "abys";
   const categoryIds = searchParams.get("category_ids") || "";
   const subIds = searchParams.get("sub_ids") || "";
 
@@ -141,172 +142,110 @@ const Search = () => {
   return (
     <Block blk="block-embossed">
       <form onSubmit={handleSubmit} disabled={loading}>
-        <label>
-          Limit:
-          <select
-            type="number"
-            value={limit}
-            onChange={(e) =>
-              setSearchParams({
-                limit: e.target.value,
-                page,
-                order,
-                has_breeds: hasBreeds,
-                breed_ids: breedIds,
-                category_ids: categoryIds,
-                sub_ids: subIds,
-              })
-            }
-          >
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="25">25</option>
-          </select>
-        </label>
-        <br />
-
-        <label style={{ display: "none" }}>
-          Page:
-          <input
-            style={{ display: "none" }}
-            type="number"
-            value={page}
-            disabled
-            onChange={(e) =>
-              setSearchParams({
-                limit,
-                page: e.target.value,
-                order,
-                has_breeds: hasBreeds,
-                breed_ids: breedIds,
-                category_ids: categoryIds,
-                sub_ids: subIds,
-              })
-            }
-          />
-        </label>
-        <br />
-        <label>
-          Order:
-          <select
-            value={order}
-            onChange={(e) =>
-              setSearchParams({
-                limit,
-                page,
-                order: e.target.value,
-                has_breeds: hasBreeds,
-                breed_ids: breedIds,
-                category_ids: categoryIds,
-                sub_ids: subIds,
-              })
-            }
-          >
-            <option value="ASC">Ascending</option>
-            <option value="DESC">Descending</option>
-            <option value="RND">Random</option>
-          </select>
-        </label>
-        <br />
-        <label>
-          Cat has breed:
-          <select
-            value={hasBreeds}
-            onChange={(e) =>
-              setSearchParams({
-                limit,
-                page,
-                order,
-                has_breeds: e.target.value,
-                breed_ids: breedIds,
-                category_ids: categoryIds,
-                sub_ids: subIds,
-              })
-            }
-          >
-            <option value="">Any</option>
-            <option value="1">Yes</option>
-            <option value="0">No</option>
-          </select>
-        </label>
-        <br />
-        {hasBreeds === "1" && (
-          <label>
-            Breed:
-            <select
-              type="text"
-              value={breedIds}
+        <Block blk="block-embossed-center">
+          <Block>
+            <span>Limit: </span>
+            <Select
+              type="number"
+              value={limit}
               onChange={(e) =>
                 setSearchParams({
-                  limit,
-                  page: 1,
+                  limit: e.target.value,
+                  page,
                   order,
                   has_breeds: hasBreeds,
-                  breed_ids: e.target.value,
+                  breed_ids: breedIds,
                   category_ids: categoryIds,
                   sub_ids: subIds,
                 })
               }
             >
-              {memoizedBreeds.map((breed) => (
-                <option key={breed.id} value={breed.id}>
-                  {breed.name}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
-        <br />
-        <label style={{ display: "none" }}>
-          Category IDs:
-          <input
-            style={{ display: "none" }}
-            type="text"
-            value={categoryIds}
-            onChange={(e) =>
-              setSearchParams({
-                limit,
-                page,
-                order,
-                has_breeds: hasBreeds,
-                breed_ids: breedIds,
-                category_ids: e.target.value,
-                sub_ids: subIds,
-              })
-            }
-          />
-        </label>
-        <br />
-        <label style={{ display: "none" }}>
-          Uploader IDs:
-          <input
-            style={{ display: "none" }}
-            type="text"
-            value={subIds}
-            onChange={(e) =>
-              setSearchParams({
-                limit,
-                page,
-                order,
-                has_breeds: hasBreeds,
-                breed_ids: breedIds,
-                category_ids: categoryIds,
-                sub_ids: e.target.value,
-              })
-            }
-          />
-        </label>
-        <br />
-        <button type="submit">Search</button>
-        <button onClick={handlePreviousPage} disabled={page <= 1 || loading}>
-          Previous
-        </button>
-        <button
-          onClick={handleNextPage}
-          disabled={limit - cats.length !== 0 || loading}
-        >
-          Next
-        </button>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="25">25</option>
+            </Select>
+          </Block>
+
+          <Block>
+            <span>Order: </span>
+            <Select
+              value={order}
+              onChange={(e) =>
+                setSearchParams({
+                  limit,
+                  page,
+                  order: e.target.value,
+                  has_breeds: hasBreeds,
+                  breed_ids: breedIds,
+                  category_ids: categoryIds,
+                  sub_ids: subIds,
+                })
+              }
+            >
+              <option value="ASC">Ascending</option>
+              <option value="DESC">Descending</option>
+              <option value="RND">Random</option>
+            </Select>
+          </Block>
+          <Block>
+            <span>Cat has breed: </span>
+            <Select
+              value={hasBreeds}
+              onChange={(e) =>
+                setSearchParams({
+                  limit,
+                  page,
+                  order,
+                  has_breeds: e.target.value,
+                  breed_ids: breedIds,
+                  category_ids: categoryIds,
+                  sub_ids: subIds,
+                })
+              }
+            >
+              <option value="">Any</option>
+              <option value="1">Yes</option>
+              <option value="0">No</option>
+            </Select>
+          </Block>
+          {hasBreeds === "1" && (
+            <Block>
+              <span>Breed: </span>
+              <Select
+                type="text"
+                value={breedIds}
+                onChange={(e) =>
+                  setSearchParams({
+                    limit,
+                    page: 1,
+                    order,
+                    has_breeds: hasBreeds,
+                    breed_ids: e.target.value,
+                    category_ids: categoryIds,
+                    sub_ids: subIds,
+                  })
+                }
+              >
+                {memoizedBreeds.map((breed) => (
+                  <option key={breed.id} value={breed.id}>
+                    {breed.name}
+                  </option>
+                ))}
+              </Select>
+            </Block>
+          )}
+        </Block>
+        <div style={{ display: "flex", justifyContent: "space-around" }}>
+          <button onClick={handlePreviousPage} disabled={page <= 1 || loading}>
+            Previous
+          </button>
+          <button
+            onClick={handleNextPage}
+            disabled={limit - cats.length !== 0 || loading}
+          >
+            Next
+          </button>
+        </div>
         <div>
           <p> Page {page} </p>
           {limit - cats.length !== 0 && (

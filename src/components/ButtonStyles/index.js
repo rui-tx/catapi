@@ -11,6 +11,16 @@ export const ButtonStyles = styled.button`
   padding: 0.5rem 0.5rem;
   transition: background-color 0.25s ease;
 
+  &:hover {
+    background-color: var(--accent);
+    transition: background-color 0.25s ease;
+  }
+
+  &:active {
+    background-color: var(--accent);
+    color: var(--default-button-font-color);
+  }
+
   ${(props) =>
     props.btn === "default" &&
     css`
@@ -36,16 +46,6 @@ export const ButtonStyles = styled.button`
       cursor: not-allowed;
       opacity: 0.7;
     `}
-
-    &:hover {
-    background-color: var(--accent);
-    transition: background-color 0.25s ease;
-  }
-
-  &:active {
-    background-color: var(--accent);
-    color: var(--default-button-font-color);
-  }
 
   ${(props) =>
     props.btn === "button-link" &&
