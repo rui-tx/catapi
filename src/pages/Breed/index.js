@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Block from "../../components/Block";
 import Button from "../../components/Button";
+import Select from "../../components/Select";
 import "./styles.css";
 
 const Breed = () => {
@@ -99,123 +100,82 @@ const Breed = () => {
   };
 
   return (
-    <Block blk="block-embossed">
+    <Block>
       {!loading && (
-        <div>
-          <span>Learn more about </span>
-          <select
-            type="text"
-            value={id}
-            onChange={(e) => handleBreedInput(e.target.value)}
-          >
-            {memoizedBreeds?.map((breed) => (
-              <option key={breed.id} value={breed.id}>
-                {breed.name}
-              </option>
-            ))}
-          </select>
+        <div className="breed-selector">
+          <Block>
+            <Select
+              value={id}
+              onChange={(e) => handleBreedInput(e.target.value)}
+            >
+              <option value="">Learn more about...</option>
+              {memoizedBreeds?.map((breed) => (
+                <option key={breed.id} value={breed.id}>
+                  {breed.name}
+                </option>
+              ))}
+            </Select>
+          </Block>
         </div>
       )}
-
-      <div>
-        <Block blk="block-embossed">
-          <div>
-            <h2>{currentBreedToShow?.name}</h2>
-            <img
-              src={currentBreedToShow?.image?.url}
-              alt={currentBreedToShow?.name}
-              width={currentBreedToShow?.image?.width}
-              height={currentBreedToShow?.image?.height}
-              style={{ borderRadius: "0.5rem", width: "100%", margin: "auto" }}
-            />
-            <p>
-              <strong>Origin:</strong> {currentBreedToShow?.origin}
-            </p>
-            <p>
-              <strong>Temperament:</strong> {currentBreedToShow?.temperament}
-            </p>
-            <p>
-              <strong>Life Span:</strong> {currentBreedToShow?.life_span} years
-            </p>
-            <p>
-              <strong>Weight (Imperial):</strong>{" "}
-              {currentBreedToShow?.weight?.imperial} lbs
-            </p>
-            <p>
-              <strong>Weight (Metric):</strong>{" "}
-              {currentBreedToShow?.weight?.metric} kg
-            </p>
-            <p>
-              <strong>Description:</strong> {currentBreedToShow?.description}
-            </p>
-            <p>
-              <strong>Affection Level:</strong>{" "}
-              {currentBreedToShow?.affection_level}
-            </p>
-            <p>
-              <strong>Adaptability:</strong> {currentBreedToShow?.adaptability}
-            </p>
-            <p>
-              <strong>Child Friendly:</strong>{" "}
-              {currentBreedToShow?.child_friendly}
-            </p>
-            <p>
-              <strong>Dog Friendly:</strong> {currentBreedToShow?.dog_friendly}
-            </p>
-            <p>
-              <strong>Energy Level:</strong> {currentBreedToShow?.energy_level}
-            </p>
-            <p>
-              <strong>Grooming:</strong> {currentBreedToShow?.grooming}
-            </p>
-            <p>
-              <strong>Health Issues:</strong>{" "}
-              {currentBreedToShow?.health_issues}
-            </p>
-            <p>
-              <strong>Intelligence:</strong> {currentBreedToShow?.intelligence}
-            </p>
-            <p>
-              <strong>Shedding Level:</strong>{" "}
-              {currentBreedToShow?.shedding_level}
-            </p>
-            <p>
-              <strong>Social Needs:</strong> {currentBreedToShow?.social_needs}
-            </p>
-            <p>
-              <strong>Stranger Friendly:</strong>{" "}
-              {currentBreedToShow?.stranger_friendly}
-            </p>
-            <p>
-              <strong>Vocalisation:</strong> {currentBreedToShow?.vocalisation}
-            </p>
-            <p>
-              <strong>Hypoallergenic:</strong>{" "}
-              {currentBreedToShow?.hypoallergenic ? "Yes" : "No"}
-            </p>
-            <p>
-              <strong>Wikipedia:</strong>{" "}
-              <a
-                href={currentBreedToShow?.wikipedia_url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Learn more
-              </a>
-            </p>
+      <div className="breed-page">
+        {id && (
+          <div className="breed-container">
+            <div className="breed-image">
+              <img
+                onClick={() =>
+                  navigate(`/cat/${currentBreedToShow?.image?.id}`)
+                }
+                src={currentBreedToShow?.image?.url}
+                alt={currentBreedToShow?.name}
+              />
+            </div>
+            <div className="breed-info">
+              <h1 className="breed-title">{currentBreedToShow?.name}</h1>
+              <p>
+                <strong>Origin:</strong> {currentBreedToShow?.origin}
+              </p>
+              <p>
+                <strong>Temperament:</strong> {currentBreedToShow?.temperament}
+              </p>
+              <p>
+                <strong>Life Span:</strong> {currentBreedToShow?.life_span}{" "}
+                years
+              </p>
+              <p>
+                <strong>Weight (Imperial):</strong>{" "}
+                {currentBreedToShow?.weight?.imperial} lbs
+              </p>
+              <p>
+                <strong>Weight (Metric):</strong>{" "}
+                {currentBreedToShow?.weight?.metric} kg
+              </p>
+              <p>
+                <strong>Description:</strong> {currentBreedToShow?.description}
+              </p>
+              {/* Other breed information here */}
+              <p>
+                <strong>Wikipedia:</strong>
+                <a
+                  href={currentBreedToShow?.wikipedia_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Learn more
+                </a>
+              </p>
+              <div className="breed-facts">
+                <h2>Facts</h2>
+                <Button onClick={fetchBreedFact}>Fetch more facts</Button>
+                {facts.map((fact) => (
+                  <p key={fact.id}>
+                    <strong>{fact.fact}</strong>
+                  </p>
+                ))}
+              </div>
+            </div>
           </div>
-        </Block>
-        <Block blk="block-embossed">
-          <h2>Facts</h2>
-          <button onClick={fetchBreedFact}>Fetch more facts</button>
-        </Block>
-        <div>
-          {facts.map((fact) => (
-            <p key={fact.id}>
-              <strong>{fact.fact}</strong>
-            </p>
-          ))}
-        </div>
+        )}
       </div>
     </Block>
   );
