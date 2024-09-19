@@ -1,9 +1,35 @@
 ![Tests](https://github.com/rui-tx/catapi/actions/workflows/playwright.yml/badge.svg)
 ![Website Deploy](https://deploy-badge.vercel.app/?url=https://catapi-eight.vercel.app/&name=catapi-eight.vercel.app)
 
-# Getting Started with Create React App
+# Cat API Browser
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## About this project
+This is a simple project, with the goal of interacting with the [The Cat API](https://thecatapi.com/) and, of course, learn React in all its glory.
+
+## Demo
+To see the project in action, check the link in the project description.
+
+## Features
+- Infinite gallery of random cat pictures
+- Search: Search for images with specific criteria
+- Favourites: Simple login system allow for saving your favourite cat pictures
+- Votes: Upvote the pictures you most like, or dislike if you don't
+- Browse cat breeds, and check for fun facts (WIP)
+- Basic components like Button and Input made with React components
+- Using [styled-component](https://styled-components.com/)
+
+### CI/CD
+- Using [Playwright](https://playwright.dev/) with Github Actions for automated tests
+- Using [Vercel](https://vercel.com/) to build and deploy automatically
+
+## Todos
+- [ ] Add missing styled-components
+- [ ] Fix Facts endpoint
+- [ ] Implement Image upload
+- [ ] Improve Search
+- [ ] Improve Votes
 
 ## Available Scripts
 
