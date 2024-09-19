@@ -419,9 +419,6 @@ function Cat() {
                   ? cat?.breeds[0].name
                   : ""}
               </h1>
-              <p className="book-description">
-                {cat?.width} x {cat?.height}
-              </p>
               {cat?.breeds &&
                 cat?.breeds.map((b, index) => (
                   <div key={index}>
