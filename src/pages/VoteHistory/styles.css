@@ -1,1 +1,54 @@
+.table_component {
+  overflow: auto;
+  width: 100%;
+}
 
+.table_component table {
+  height: 100%;
+  width: 100%;
+  table-layout: fixed;
+  border: 1px solid var(--accent);
+  border-collapse: collapse;
+  border-spacing: 1px;
+  border-radius: var(--default-block-border-radius);
+  text-align: left;
+}
+
+.table_component caption {
+  caption-side: top;
+  text-align: center;
+}
+
+.table_component th {
+  border: 1px solid var(--default-block-border-color);
+  background-color: var(--accent);
+  color: var(--default-box-bg-color);
+  padding: var(--default-block-padding);
+}
+
+.table_component td {
+  border: 1px solid var(--default-block-border-color);
+  background-color: var(--default-block-bg-color);
+  color: #000000;
+  padding: var(--default-block-padding);
+  text-align: center;
+}
+
+@media (max-width: 575px) {
+  .table_component {
+    font-size: 0.5rem;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+  .table_component {
+    font-size: 0.8rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .block {
+    padding: var(--default-block-padding);
+    margin: var(--default-block-margin);
+  }
+}

@@ -55,41 +55,43 @@ const VoteHistory = () => {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <div>
+        <Block blk="block-embossed">
           <h2>Votes</h2>
-          <table border="1" cellPadding="10" cellSpacing="0">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Image</th>
-                <th>Image ID</th>
-                <th>Sub ID</th>
-                <th>Created At</th>
-                <th>Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              {votes.map((item) => (
-                <tr key={item.id}>
-                  <td>{item.id}</td>
-                  <td>
-                    <img
-                      style={{ cursor: "pointer" }}
-                      src={item.image.url}
-                      alt={item.image_id}
-                      width="100"
-                      onClick={() => handleImageClick(item.image_id)}
-                    />
-                  </td>
-                  <td>{item.image_id}</td>
-                  <td>{item.sub_id}</td>
-                  <td>{new Date(item.created_at).toLocaleString()}</td>
-                  <td>{item.value}</td>
+          <div className="table_component">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Image</th>
+                  <th>Image ID</th>
+                  <th>Sub ID</th>
+                  <th>Created At</th>
+                  <th>Value</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {votes.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.id}</td>
+                    <td>
+                      <img
+                        style={{ cursor: "pointer" }}
+                        src={item.image.url}
+                        alt={item.image_id}
+                        width="100"
+                        onClick={() => handleImageClick(item.image_id)}
+                      />
+                    </td>
+                    <td>{item.image_id}</td>
+                    <td>{item.sub_id}</td>
+                    <td>{new Date(item.created_at).toLocaleString()}</td>
+                    <td>{item.value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Block>
       )}
     </Block>
   );

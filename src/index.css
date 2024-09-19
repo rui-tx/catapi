@@ -66,6 +66,9 @@
 
   --default-navbar-hamburger-overlay-color: #00008000;
   --default-navbar-hamburger-overlay-blur: 12px; /*  DOES NOT WORK CHANGE ON THE COMPONENT */
+
+  /* Table */
+  --default-table-border-color: #4a4a4a;
 }
 
 body {
