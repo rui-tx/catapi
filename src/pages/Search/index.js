@@ -15,13 +15,30 @@ const Search = () => {
   const page = searchParams.get("page") || 1;
   const order = searchParams.get("order") || "RND";
   const hasBreeds = searchParams.get("has_breeds") || "";
-  const breedIds = searchParams.get("breed_ids") || "abys";
+  const breedIds = searchParams.get("breed_ids") || "";
   const categoryIds = searchParams.get("category_ids") || "";
   const subIds = searchParams.get("sub_ids") || "";
 
   const navigate = useNavigate();
   const memoizedCats = useMemo(() => cats, [cats]);
   const memoizedBreeds = useMemo(() => breeds, [breeds]);
+
+  const buildUrl = (baseUrl, params) => {
+    const query = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      value !== "" && query.append(key, value);
+    });
+    return `${baseUrl}?${query.toString()}`;
+  };
+
+  const updateSearchParams = (newParams) => {
+    const params = Object.fromEntries([...searchParams]);
+    const filteredParams = { ...params, ...newParams };
+    Object.keys(filteredParams).forEach(
+      (key) => !filteredParams[key] && delete filteredParams[key]
+    );
+    setSearchParams(filteredParams);
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -65,7 +82,21 @@ const Search = () => {
   };
 
   const fetchCats = () => {
-    const url = `https://api.thecatapi.com/v1/images/search?limit=${limit}&page=${page}&order=${order}&has_breeds=${hasBreeds}&breed_ids=${breedIds}&category_ids=${categoryIds}&sub_ids=${subIds}`;
+    const baseUrl = `https://api.thecatapi.com/v1/images/search`;
+
+    // Build parameters object
+    const params = {
+      limit,
+      page,
+      order,
+      has_breeds: hasBreeds,
+      breed_ids: breedIds,
+      category_ids: categoryIds,
+      sub_ids: subIds,
+    };
+
+    //const url = `https://api.thecatapi.com/v1/images/search?limit=${limit}&page=${page}&order=${order}&has_breeds=${hasBreeds}&breed_ids=${breedIds}&category_ids=${categoryIds}&sub_ids=${subIds}`;
+    const url = buildUrl(baseUrl, params);
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("x-api-key", api_key);
@@ -99,7 +130,7 @@ const Search = () => {
   };
 
   const handleNextPage = () => {
-    setSearchParams({
+    updateSearchParams({
       limit,
       page: parseInt(page) + 1,
       order,
@@ -112,7 +143,7 @@ const Search = () => {
 
   const handlePreviousPage = () => {
     if (page > 1) {
-      setSearchParams({
+      updateSearchParams({
         limit,
         page: parseInt(page) - 1,
         order,
@@ -149,7 +180,7 @@ const Search = () => {
               type="number"
               value={limit}
               onChange={(e) =>
-                setSearchParams({
+                updateSearchParams({
                   limit: e.target.value,
                   page,
                   order,
@@ -171,7 +202,7 @@ const Search = () => {
             <Select
               value={order}
               onChange={(e) =>
-                setSearchParams({
+                updateSearchParams({
                   limit,
                   page,
                   order: e.target.value,
@@ -184,7 +215,9 @@ const Search = () => {
             >
               <option value="ASC">Ascending</option>
               <option value="DESC">Descending</option>
-              <option value="RND">Random</option>
+              <option value="RND" selected>
+                Random
+              </option>
             </Select>
           </Block>
           <Block>
@@ -192,7 +225,7 @@ const Search = () => {
             <Select
               value={hasBreeds}
               onChange={(e) =>
-                setSearchParams({
+                updateSearchParams({
                   limit,
                   page,
                   order,
@@ -203,9 +236,10 @@ const Search = () => {
                 })
               }
             >
-              <option value="">Any</option>
               <option value="1">Yes</option>
-              <option value="0">No</option>
+              <option value="0" selected>
+                No
+              </option>
             </Select>
           </Block>
           {hasBreeds === "1" && (
@@ -215,7 +249,7 @@ const Search = () => {
                 type="text"
                 value={breedIds}
                 onChange={(e) =>
-                  setSearchParams({
+                  updateSearchParams({
                     limit,
                     page: 1,
                     order,
@@ -226,6 +260,7 @@ const Search = () => {
                   })
                 }
               >
+                <option value="">Any</option>
                 {memoizedBreeds.map((breed) => (
                   <option key={breed.id} value={breed.id}>
                     {breed.name}
