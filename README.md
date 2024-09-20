@@ -30,6 +30,13 @@ To see the project in action, check the link in the project description.
 - [ ] Improve Search
 - [ ] Improve Votes
 
+## Images
+![Main Page](https://cloud.ducknexus.com/s/mB7GaNs5mAz9YCJ/download/MainPage.png)
+![Gallery Page](https://cloud.ducknexus.com/s/XqY5rLLdS3spLD8/download/GalleryPage.png)
+![Favourite Page](https://cloud.ducknexus.com/s/wSPiWnpiR2xcDj9/download/FavouritesPage.png)
+![Breed Page](https://cloud.ducknexus.com/s/dz4YfSqRn6pTAgn/download/BreedPage.png)
+![Search Page](https://cloud.ducknexus.com/s/9A5ygfooMBt2JRe/download/SearchPage.png)
+
 ## Available Scripts
 
 In the project directory, you can run:
