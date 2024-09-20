@@ -2,11 +2,7 @@
 ![Website Deploy](https://deploy-badge.vercel.app/?url=https://catapi-eight.vercel.app/&name=catapi-eight.vercel.app)
 ![Website Up](https://img.shields.io/website?url=https%3A%2F%2Fcatapi-eight.vercel.app%2F)
 
-
-
 # Cat API Browser
-
-> This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## About this project
 This is a simple project, with the goal of interacting with the [The Cat API](https://thecatapi.com/) and, of course, learn React in all its glory.
@@ -20,8 +16,8 @@ To see the project in action, check the link in the project description.
 - Favourites: Simple login system allow for saving your favourite cat pictures
 - Votes: Upvote the pictures you most like, or dislike if you don't
 - Browse cat breeds, and check for fun facts (WIP)
-- Basic components like Button and Input made with React components
-- Using [styled-component](https://styled-components.com/)
+- Simple and flexible theme, including basic components like Button and Input
+- Using [styled-components](https://styled-components.com/)
 
 ### CI/CD
 - Using [Playwright](https://playwright.dev/) with Github Actions for automated tests
@@ -72,6 +68,7 @@ Instead, it will copy all the configuration files and the transitive dependencie
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
 ## Learn More
+> This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
