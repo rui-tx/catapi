@@ -1,5 +1,8 @@
-![Tests](https://github.com/rui-tx/catapi/actions/workflows/playwright.yml/badge.svg)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/rui-tx/catapi/playwright.yml?label=Tests)
 ![Website Deploy](https://deploy-badge.vercel.app/?url=https://catapi-eight.vercel.app/&name=catapi-eight.vercel.app)
+![Website Up](https://img.shields.io/website?url=https%3A%2F%2Fcatapi-eight.vercel.app%2F)
+
+
 
 # Cat API Browser
 
