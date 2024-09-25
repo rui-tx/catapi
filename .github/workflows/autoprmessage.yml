@@ -1,8 +1,8 @@
-name: Update PR with Commits
+name: Auto-fill PR with Commit Messages
 
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [opened]
 
 jobs:
   update-pr:
@@ -22,22 +22,8 @@ jobs:
         commit_messages=$(git log --pretty=format:"%h - %s" ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }})
         echo "::set-output name=messages::${commit_messages}"
 
-    - name: Update PR description with commits
-      uses: peter-evans/repository-dispatch@v2
-      with:
-        event-type: update-pr-description
-        client-payload: |
-          {
-            "pr_number": "${{ steps.pr.outputs.pr_number }}",
-            "description": "${{ github.event.pull_request.body }}\n\n### Commits in this PR:\n${{ steps.commits.outputs.messages }}"
-          }
-
     - name: Update pull request description
-      uses: peter-evans/create-or-update-comment@v2
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        repository: ${{ github.repository }}
-        issue-number: ${{ steps.pr.outputs.pr_number }}
-        body: |
-          ### Commits in this PR:
-          ${{ steps.commits.outputs.messages }}
+      run: |
+        gh pr edit ${{ steps.pr.outputs.pr_number }} --body "${{ github.event.pull_request.body }}\n\n### Commits in this PR:\n${{ steps.commits.outputs.messages }}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
