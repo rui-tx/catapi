@@ -7,6 +7,7 @@
 ## About this project
 This is a simple project, with the goal of interacting with the [The Cat API](https://thecatapi.com/) and, of course, learn React in all its glory.
 
+
 ## Demo
 To see the project in action, check the link in the project description.
 
